@@ -1,9 +1,9 @@
-from itertools import combinations
 import sys
+from itertools import combinations
 
 # @author hannahgsimon
 # This code assumes that items in each transaction are in numerical order.
-# Duplicates in one transaction inherently aren't accounted for in this algorithm
+# Duplicates in one transaction aren't accounted for in this algorithm
 
 class Apriori:
     def __init__(self, transactions, min_sup):
@@ -76,10 +76,23 @@ class Apriori:
         freq_itemsets = sorted(freq_itemsets, key=lambda x: (len(x), sorted(x)))
         return freq_itemsets
 
-if __name__ == '__main__':
+def main():
     print("Apriori Algorithm Project\nAuthor Info: Hannah Simon\n")
-    file_name = '1000-out1.csv'
-    file_path = rf'C:\Users\Hannah\Desktop\{file_name}'
+    if len(sys.argv) != 3:
+        print("Usage: python anagram.py <file_path> <min_sup>")
+        return
+
+    """
+    print(sys.argv)
+    print(len(sys.argv))
+    print(sys.argv[0])
+    print(sys.argv[1])
+    print(sys.argv[2])
+    min_sup = atoi(sys.argv[2])
+  """
+    file_path = sys.argv[1]
+    min_sup = int(sys.argv[2])
+
     transactions = []
 
     with open(file_path, 'r') as file:
@@ -95,23 +108,28 @@ if __name__ == '__main__':
                 if transaction:
                     transactions.append(transaction)
 
-    """
-    for transaction in transactions:
-        print(transaction)
-    print(len(transactions))
-    """
-
-    min_sup = 20
     freq_itemsets = Apriori(transactions, min_sup).run()
 
     print("File Run:", file_path)
     print("Minimum Support:", min_sup)
-    if not freq_itemsets:
-        print("No itemsets in dataset meeting prevalence of", min_sup)
-    else:
+    """if not freq_itemsets:
+        print("No itemsets in dataset meeting prevalence of", min_sup)"""
+    
+    print("{", end = " ")
+    for itemset in freq_itemsets:
+        print("{", end = " ")
+        print(*itemset, sep = " , ", end = " ")
+        print("} ", end = "")
+    print("}")
+
+    """else:
         for itemset in freq_itemsets:
             if len(itemset) == 1:
                 print(f"({itemset[0]})")
             else:
-                print(itemset)
+                print(itemset)"""
+
     print("End - Total Items:", len(freq_itemsets))
+
+if __name__ == '__main__':
+    main()
