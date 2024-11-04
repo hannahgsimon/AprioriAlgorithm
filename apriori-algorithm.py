@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import sys
 from itertools import combinations
 import pandas as pd
+import time
 
 # @author hannahgsimon
 # This code assumes that items in each transaction are in numerical order.
@@ -95,76 +96,38 @@ def apriori():
         return jsonify({'error': 'File type not supported. Please upload a CSV file.'}), 400
 
     try:
-        # Read the CSV while skipping the first column (index)
-        df = pd.read_csv(file, header=None)
-        transactions = df.iloc[:, 1:].apply(lambda x: x.dropna().astype(int).tolist(), axis=1).tolist()
+        rows = []
+        for line in file:
+            row = line.decode('utf-8').strip().split(',')
+            filtered_row = [int(value) for value in row if value.strip()]
+            rows.append(filtered_row)
+
+        transactions = rows
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-    # Retrieve min_sup from form data instead of query parameters
     min_sup = request.form.get('min_sup', type=int)
 
     if min_sup is None:
         return jsonify({'error': 'min_sup parameter is required'}), 400
 
+    start_time = time.time()
     freq_itemsets = Apriori(transactions, min_sup).run()
+    total_time = time.time() - start_time
 
-    return jsonify({'frequent_itemsets': freq_itemsets})
-
-def main():
-    print("Apriori Algorithm Project\nAuthor Info: Hannah Simon\n")
-    if len(sys.argv) != 3:
-        print("Usage: python apriori.py <file_path> <min_sup>")
-        return
-
-    """
-    print(sys.argv)
-    print(len(sys.argv))
-    print(sys.argv[0])
-    print(sys.argv[1])
-    print(sys.argv[2])
-    min_sup = atoi(sys.argv[2])
-  """
-    file_path = sys.argv[1]
-    min_sup = int(sys.argv[2])
-
-    transactions = []
-
-    with open(file_path, 'r') as file:
-        for line in file:
-            row = line.strip().split(',')
-            if len(row) > 1:
-                items = row[1:]
-                try:
-                    transaction = tuple(int(item.strip()) for item in items if item.strip())
-                except ValueError as e:
-                    print(f"Error: {e} - Non-integer data type in file.")
-                    sys.exit(1)
-                if transaction:
-                    transactions.append(transaction)
-
-    freq_itemsets = Apriori(transactions, min_sup).run()
-
-    print("File Run:", file_path)
-    print("Minimum Support:", min_sup)
-    """if not freq_itemsets:
-        print("No itemsets in dataset meeting prevalence of", min_sup)"""
+    formatted_output = '{' + ' '.join(['{' + ', '.join(map(str, itemset)) + '}' for itemset in freq_itemsets]) + '}'
     
-    print("{", end = " ")
-    for itemset in freq_itemsets:
-        print("{", end = " ")
-        print(*itemset, sep = " , ", end = " ")
-        print("} ", end = "")
-    print("}")
-
-    """else:
-        for itemset in freq_itemsets:
-            if len(itemset) == 1:
-                print(f"({itemset[0]})")
-            else:
-                print(itemset)"""
-
-    print("End - Total Items:", len(freq_itemsets))
+    file_name = file.filename
+    num_items = len(freq_itemsets)
+    output = (
+        f"Data Mining Apriori Algorithm<br><br>"
+        f"Input file: {file_name}<br><br>"
+        f"Minimal support: {min_sup}<br><br>"
+        f"{formatted_output}<br><br>"
+        f"End - total items: {num_items}<br><br>"
+        f"Total running time: {total_time:.6f}"
+    )
+    return output
 
 if __name__ == '__main__':
     app.run(debug=True)
