@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import sys
 from itertools import combinations
+import pandas as pd
 
 # @author hannahgsimon
 # This code assumes that items in each transaction are in numerical order.
@@ -81,24 +82,33 @@ class Apriori:
 
 @app.route('/')
 def home():
-    return 'Welcome to the Apriori Algorithm API! Use POST /apriori to get frequent itemsets.'
+    return render_template('index.html')
 
 @app.route('/apriori', methods=['POST'])
-def apriori_route():
-    data = request.json
-    transactions = data.get('transactions')
-    min_sup = data.get('min_sup')
+def apriori():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
 
-    if not isinstance(transactions, list) or not all(isinstance(t, list) for t in transactions):
-        return jsonify({"error": "Invalid transactions format"}), 400
+    file = request.files['file']
 
-    if not isinstance(min_sup, int) or min_sup <= 0:
-        return jsonify({"error": "Minimum support must be a positive integer"}), 400
+    if not file.filename.endswith('.csv'):
+        return jsonify({'error': 'File type not supported. Please upload a CSV file.'}), 400
 
-    apriori = Apriori(transactions, min_sup)
-    freq_itemsets = apriori.run()
-    return jsonify(freq_itemsets)
+    try:
+        # Read the CSV while skipping the first column (index)
+        df = pd.read_csv(file, header=None)
+        transactions = df.iloc[:, 1:].apply(lambda x: x.dropna().astype(int).tolist(), axis=1).tolist()
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
+    if 'min_sup' not in request.args:
+        return jsonify({'error': 'min_sup parameter is required'}), 400
+    
+    min_sup = request.args.get('min_sup', type=int)
+
+    freq_itemsets = Apriori(transactions, min_sup).run()
+
+    return jsonify({'frequent_itemsets': freq_itemsets})
 
 def main():
     print("Apriori Algorithm Project\nAuthor Info: Hannah Simon\n")
