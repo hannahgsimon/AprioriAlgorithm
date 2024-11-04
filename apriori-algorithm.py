@@ -101,10 +101,11 @@ def apriori():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-    if 'min_sup' not in request.args:
+    # Retrieve min_sup from form data instead of query parameters
+    min_sup = request.form.get('min_sup', type=int)
+
+    if min_sup is None:
         return jsonify({'error': 'min_sup parameter is required'}), 400
-    
-    min_sup = request.args.get('min_sup', type=int)
 
     freq_itemsets = Apriori(transactions, min_sup).run()
 
