@@ -1,1 +1,1 @@
-web: python apriori-algorithm.py
+web: gunicorn apriori-algorithm:app
