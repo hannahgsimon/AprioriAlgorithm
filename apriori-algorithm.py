@@ -79,6 +79,10 @@ class Apriori:
         freq_itemsets = sorted(freq_itemsets, key=lambda x: (len(x), sorted(x)))
         return freq_itemsets
 
+@app.route('/')
+def home():
+    return 'Welcome to the Apriori Algorithm API! Use POST /apriori to get frequent itemsets.'
+
 @app.route('/apriori', methods=['POST'])
 def apriori_route():
     data = request.json
