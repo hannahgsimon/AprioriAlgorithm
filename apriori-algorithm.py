@@ -7,7 +7,7 @@ import pandas as pd
 # This code assumes that items in each transaction are in numerical order.
 # Duplicates in one transaction aren't accounted for in this algorithm
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='.')
 
 class Apriori:
     def __init__(self, transactions, min_sup):
