@@ -1,9 +1,12 @@
+from flask import Flask, request, jsonify
 import sys
 from itertools import combinations
 
 # @author hannahgsimon
 # This code assumes that items in each transaction are in numerical order.
 # Duplicates in one transaction aren't accounted for in this algorithm
+
+app = Flask(__name__)
 
 class Apriori:
     def __init__(self, transactions, min_sup):
@@ -76,10 +79,27 @@ class Apriori:
         freq_itemsets = sorted(freq_itemsets, key=lambda x: (len(x), sorted(x)))
         return freq_itemsets
 
+@app.route('/apriori', methods=['POST'])
+def apriori_route():
+    data = request.json
+    transactions = data.get('transactions')
+    min_sup = data.get('min_sup')
+
+    if not isinstance(transactions, list) or not all(isinstance(t, list) for t in transactions):
+        return jsonify({"error": "Invalid transactions format"}), 400
+
+    if not isinstance(min_sup, int) or min_sup <= 0:
+        return jsonify({"error": "Minimum support must be a positive integer"}), 400
+
+    apriori = Apriori(transactions, min_sup)
+    freq_itemsets = apriori.run()
+    return jsonify(freq_itemsets)
+
+
 def main():
     print("Apriori Algorithm Project\nAuthor Info: Hannah Simon\n")
     if len(sys.argv) != 3:
-        print("Usage: python anagram.py <file_path> <min_sup>")
+        print("Usage: python apriori.py <file_path> <min_sup>")
         return
 
     """
@@ -132,4 +152,4 @@ def main():
     print("End - Total Items:", len(freq_itemsets))
 
 if __name__ == '__main__':
-    main()
+    app.run(debug=True)
