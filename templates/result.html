@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apriori Algorithm Result</title>
+    <style>
+        * {
+            box-sizing: border-box; /* Ensure padding and borders are included in element's total width and height */
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Minimum height of the viewport */
+        }
+
+        main {
+            flex: 1; /* Allow main to grow and take available space */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            padding: 20px; /* Add some padding around the content */
+        }
+
+        footer {
+            text-align: center; /* Center the footer text */
+            padding: 1rem; /* Padding for footer */
+            background-color: #f1f1f1; /* Light background color for footer */
+            position: relative; /* Position relative to avoid overlap */
+            width: 100%; /* Full width */
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Result</h1>
+        <div>{{ output|safe }}</div> <!-- Display the output safely -->
+
+        <a href="/">Go back to Home</a>
+    </main>
+
+    <footer>
+        <p>Author: Hannah G. Simon</p>
+        <p>Email: <a href="mailto:hgsimon2@gmail.com">hgsimon2@gmail.com</a></p>
+	<p>LinkedIn: <a href="https://www.linkedin.com/in/hannahgsimon/" target="_blank">hannahgsimon</a></p>
+    </footer>
+</body>
+</html>
