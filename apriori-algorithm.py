@@ -85,6 +85,10 @@ class Apriori:
 def home():
     return render_template('index.html')
 
+@app.route('/image')
+def image():
+    return render_template('image.html')
+
 @app.route('/apriori', methods=['POST'])
 def apriori():
     if 'file' not in request.files:
@@ -120,12 +124,11 @@ def apriori():
     file_name = file.filename
     num_items = len(freq_itemsets)
     output = (
-        f"Data Mining Apriori Algorithm<br><br>"
-        f"Input file: {file_name}<br><br>"
-        f"Minimal support: {min_sup}<br><br>"
+        f"Input File: {file_name}<br><br>"
+        f"Minimal Support: {min_sup}<br><br>"
         f"{formatted_output}<br><br>"
-        f"End - total items: {num_items}<br><br>"
-        f"Total running time: {total_time:.6f}"
+        f"End - Total Items: {num_items}<br><br>"
+        f"Total Running Time: {total_time:.6f}"
     )
     return render_template('result.html', output=output)
 

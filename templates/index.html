@@ -6,31 +6,50 @@
     <title>Apriori Algorithm API</title>
     <style>
         * {
-            box-sizing: border-box; /* Ensure padding and borders are included in element's total width and height */
+            box-sizing: border-box;
         }
 
         body {
             margin: 0;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Minimum height of the viewport */
+            min-height: 100vh;
         }
 
         main {
-            flex: 1; /* Allow main to grow and take available space */
+            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Center content vertically */
-            align-items: center; /* Center content horizontally */
-            padding: 20px; /* Add some padding around the content */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
         footer {
-            text-align: center; /* Center the footer text */
-            padding: 1rem; /* Padding for footer */
-            background-color: #f1f1f1; /* Light background color for footer */
-            position: relative; /* Position relative to avoid overlap */
-            width: 100%; /* Full width */
+            text-align: center;
+            padding: 1rem;
+            background-color: #f1f1f1;
+            position: relative;
+            width: 100%;
+        }
+
+        .note {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 0.8em;
+        }
+
+        .link {
+            font-size: 0.8em;
+            color: blue;
+            text-decoration: underline;
+            margin: 20px 0;
+        }
+
+        a {
+            color: blue;
+            text-decoration: underline;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -48,12 +67,18 @@
 
             <input type="submit" value="Submit">
         </form>
+
+        <br><br>
+        <div class="note">
+            Note: CSV file must be in this format, with the first column indicating the row number and all data to the right of it.
+        </div>
+        <a href="image" target="_blank" class="link">Click here to view the Example CSV Format</a>
     </main>
 
     <footer>
         <p>Author: Hannah G. Simon</p>
         <p>Email: <a href="mailto:hgsimon2@gmail.com">hgsimon2@gmail.com</a></p>
-	<p>LinkedIn: <a href="https://www.linkedin.com/in/hannahgsimon/" target="_blank">hannahgsimon</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/hannahgsimon/" target="_blank">hannahgsimon</a></p>
     </footer>
 </body>
 </html>
