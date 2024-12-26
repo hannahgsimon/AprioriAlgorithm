@@ -2,7 +2,8 @@
 
 ## Overview
 - The Apriori algorithm is a classic algorithm used in data mining for extracting frequent itemsets from large datasets. It operates under the principle of "bottom-up" generation, where it generates candidate itemsets from the frequent itemsets found in the previous iteration. This code is designed to analyze a CSV file containing data and identify itemsets that meet a specified minimum support threshold.
-- This README focuses on the command-line version from the last commit on 11/03/2024. The latest commit introduces a Flask web application that implements the same functionality.
+- This README focuses on the command-line version from the last commit on 11/03/2024.
+- The latest commit introduces a Flask web application that implements the same functionality. It includes a `static` folder storing web assets such as images, a `templates` folder for HTML files, a `Procfile` for deployment, and `requirements.txt` to manage dependencies.
 
 ## Requirements
 - Python 3.x
